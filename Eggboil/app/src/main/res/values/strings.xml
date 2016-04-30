@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Boil My Egg!</string>
+    <string name="size">Egg Size</string>
+    <string name="temp">Egg Temperature</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="start_timer">Start Timer</string>
+    <string name="xlarge">Extra Large</string>
+    <string name="large">Large</string>
+    <string name="medium">Medium</string>
+    <string name="small">Small</string>
+    <string name="fridge">Refrigerator</string>
+    <string name="room">Room Temperature</string>
+    <string name="soft_boil">Soft Boil</string>
+    <string name="medium_boil">Medium Boil</string>
+    <string name="hard_boil">Hard Boil</string>
+</resources>

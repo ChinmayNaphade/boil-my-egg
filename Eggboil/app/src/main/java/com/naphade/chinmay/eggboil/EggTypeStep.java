@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.github.fcannizzaro.materialstepper.AbstractStep;
+import com.naphade.chinmay.eggboil.enums.EggType;
 
 import javax.inject.Inject;
 

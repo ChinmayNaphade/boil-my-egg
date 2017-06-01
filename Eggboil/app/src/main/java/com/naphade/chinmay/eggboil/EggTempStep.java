@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.github.fcannizzaro.materialstepper.AbstractStep;
+import com.naphade.chinmay.eggboil.enums.EggTemp;
 
 import javax.inject.Inject;
 

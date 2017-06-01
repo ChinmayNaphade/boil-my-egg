@@ -1,5 +1,9 @@
 package com.naphade.chinmay.eggboil;
 
+import com.naphade.chinmay.eggboil.enums.EggSize;
+import com.naphade.chinmay.eggboil.enums.EggTemp;
+import com.naphade.chinmay.eggboil.enums.EggType;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,10 +24,6 @@ public class BoilTimeCalculator {
         return size;
     }
 
-    public EggType getType() {
-        return type;
-    }
-
     public void setSize(EggSize size) {
         this.size = size;
         switch (size) {
@@ -42,17 +42,8 @@ public class BoilTimeCalculator {
         }
     }
 
-
-    public void setTemp(EggTemp temp) {
-        this.temp = temp;
-        switch (temp) {
-            case Fridge:
-                temperature = 3;
-                break;
-            case Room:
-                temperature = 25;
-                break;
-        }
+    public EggType getType() {
+        return type;
     }
 
     public void setType(EggType type) {
@@ -66,6 +57,18 @@ public class BoilTimeCalculator {
                 break;
             case Hard:
                 typeOfBoil = 80;
+        }
+    }
+
+    public void setTemp(EggTemp temp) {
+        this.temp = temp;
+        switch (temp) {
+            case Fridge:
+                temperature = 3;
+                break;
+            case Room:
+                temperature = 25;
+                break;
         }
     }
 

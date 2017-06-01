@@ -19,16 +19,16 @@
 
 
             <ImageView
-                android:padding="10dp"
                 android:id="@+id/small"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
+                android:padding="10dp"
                 android:src="@drawable/food" />
 
             <TextView
-                android:layout_margin="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:text="@string/small" />
         </LinearLayout>
 
@@ -42,15 +42,15 @@
 
             <ImageView
                 android:id="@+id/medium"
-                android:padding="10dp"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
+                android:padding="10dp"
                 android:src="@drawable/food" />
 
             <TextView
-                android:layout_margin="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:text="@string/medium" />
         </LinearLayout>
 
@@ -74,15 +74,15 @@
 
             <ImageView
                 android:id="@+id/large"
-                android:padding="10dp"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:padding="10dp"
                 android:src="@drawable/food" />
 
             <TextView
-                android:layout_margin="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:text="@string/large" />
         </LinearLayout>
 
@@ -96,15 +96,15 @@
 
             <ImageView
                 android:id="@+id/xlarge"
-                android:padding="10dp"
                 android:layout_width="110dp"
                 android:layout_height="110dp"
+                android:padding="10dp"
                 android:src="@drawable/food" />
 
             <TextView
-                android:layout_margin="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:text="@string/xlarge" />
         </LinearLayout>
 

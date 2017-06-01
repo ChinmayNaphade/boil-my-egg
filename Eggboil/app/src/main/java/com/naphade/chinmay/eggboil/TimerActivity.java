@@ -3,18 +3,19 @@ package com.naphade.chinmay.eggboil;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
@@ -29,10 +30,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class TimerActivity extends AppCompatActivity {
+public class TimerActivity extends AppCompatActivity implements TimerView {
     private static final String TAG = "TimerActivity";
     public static boolean active = false;
-
+    @Inject
+    TimerPresenter presenter;
     @Inject
     BoilTimeCalculator calculator;
 
@@ -45,12 +47,12 @@ public class TimerActivity extends AppCompatActivity {
     CircularFillableLoaders circularFillableLoaders;
 
     CountDownTimer countDownTimer;
-    boolean timerRunning = false;
 
     NotificationManager notificationManager;
     NotificationCompat.Builder mBuilder;
     NotificationCompat.Builder mBuilder1;
 
+    AlertDialog.Builder alertBuilder;
 
     @Bind(R.id.button)
     Button button;
@@ -58,16 +60,21 @@ public class TimerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        active = true;
         setContentView(R.layout.activity_timer);
+
         ButterKnife.bind(this);
         ((App) getApplication()).getAppComponent().inject(this);
+
+        presenter.setView(this);
+
+
+        active = true;
 
         circularFillableLoaders.setAmplitudeRatio(0.08f);
         circularFillableLoaders.setBorderWidth(0f);
 
-        Animation in = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-        Animation out = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
+        //Animation in = AnimationUtils.loadAnimation(this, R.anim.scale_in);
+        //Animation out = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
 
         textSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
 
@@ -78,12 +85,10 @@ public class TimerActivity extends AppCompatActivity {
                 return myText;
             }
         });
-        textSwitcher.setInAnimation(in);
-        textSwitcher.setOutAnimation(out);
+        //  textSwitcher.setInAnimation(in);
+        //  textSwitcher.setOutAnimation(out);
 
-        // TODO: 29/04/16 revert back to original
-        //millis = calculator.getMillis();
-        millis = 5000;
+        millis = calculator.getMillis();
         textSwitcher.setText(MillisToTime.getTime(millis));
 
         //Define Notification Manager
@@ -106,12 +111,24 @@ public class TimerActivity extends AppCompatActivity {
         mBuilder1 = (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext())
                 .setSmallIcon(R.drawable.food)
                 .setContentTitle(getResources().getString(R.string.app_name))
-                .setContentText("Eggs are boiled")
+                .setContentText("Eggs are ready!")
                 .setPriority(2)
                 .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .setContentIntent(pIntent)
                 .setSound(soundUri);
+
+        final Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), soundUri);
+
+        alertBuilder = new AlertDialog.Builder(this)
+                .setTitle("Eggs are ready!")
+                .setMessage("Turn off timer")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        r.stop();
+                    }
+                });
+        final AlertDialog dialog = alertBuilder.create();
 
         countDownTimer = new CountDownTimer(millis, 1000) {
 
@@ -125,7 +142,8 @@ public class TimerActivity extends AppCompatActivity {
                 textSwitcher.setText("00:00");
                 notificationManager.cancel(0);
                 if (active) {
-
+                    r.play();
+                    dialog.show();
                 } else {
                     notificationManager.notify(1, mBuilder1.build());
                 }
@@ -140,18 +158,18 @@ public class TimerActivity extends AppCompatActivity {
 
     @OnClick(R.id.button)
     public void startTimer(View view) {
-        if (timerRunning) {
+        presenter.onButtonClick(view);
+       /* if (timerRunning) {
             textSwitcher.setText(MillisToTime.getTime(millis));
             countDownTimer.cancel();
             button.setText("Start Timer");
             notificationManager.cancel(0);
+            circularFillableLoaders.setProgress(0);
             timerRunning = false;
         } else {
-            countDownTimer.start();
-            button.setText("Reset Timer");
+
             timerRunning = true;
-            notificationManager.notify(0, mBuilder.build());
-        }
+        }*/
     }
 
     @Override
@@ -160,4 +178,23 @@ public class TimerActivity extends AppCompatActivity {
         active = false;
     }
 
+    @Override
+    public void updateTimerText(String text) {
+        textSwitcher.setText(text);
+    }
+
+    @Override
+    public void cancelTimer() {
+        countDownTimer.cancel();
+        button.setText("Start Timer");
+        notificationManager.cancel(0);
+        circularFillableLoaders.setProgress(0);
+    }
+
+    @Override
+    public void startTimer() {
+        countDownTimer.start();
+        button.setText("Reset Timer");
+        notificationManager.notify(0, mBuilder.build());
+    }
 }
